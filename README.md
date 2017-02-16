@@ -1,49 +1,48 @@
 Markus
 ========================
 
-**Markus** - набор task'ок и watcher'ов, для верстки с шаблонизатором SwigJS.
+**Markus** - this is set of gulp tasks and watchers for converting psd to html using SwigJS template engine.
 
-#####Этот проект больше не поддерживается.
-
-Цель:
+Goal:
 ------------
 
-Основная цель `Markus` - сделать максимально быструю интеграцию верстку с Symfony, минимизировав затраты на перенос и редактирование шаблонов, за счет частичного использования методологии Symfony, шаблонизатора SwigJS и великолепного сборщика Gulp.
+The main goal of `Markus`is creating the fastest html integration with Symphany. Decrease time for replacing and editing templates by means of using Symphany methodology, SwigJS template engine and gorgeouse Gulp bundler.
 
-Структура проекта:
+Project structure:
 ------------
 
 В проекте три основных директории: `web`, `markup` и `gulp`. Подробнее о каждой из папок ниже.
 
+There are three main directories: `web`, `markup` and `gulp`. Description of each one is below
+
 Web:
 ------------
-В папке web представлены все статичные файлы проекта: 
-- `components` - все вендоры bower;
-- `less` - ресурсы less;
-- `css`  - скомпилированные файлы css;
-- `js` - скомпилированные файлы js (не реализовано. Сейчас используются простой JS);
-- `images|videos` - все изображения|видео;
-- `fonts` - все используемые шрифты;
-- `plugins` - все кастомные вендоры, которые не вошли в bower;
-- `*.html` - скомпилированные файлы проекта.
-
-*Замечание:* Никто не запрещает менять структуру и добавлять новые папки и файлы. Но есть пара task, которые очень жестко завязаны на данной структуре. Ее можно посмотреть в файле конфигурации gulp - `gulp/config.js`. Там, как раз и  прописаны все пути к требуемым папкам и файлам.  Изменение структуры, позволяет гибко настраивать иерархию папок и файлов с минимальными трудозатратами.
+Web folder contains all project static files: 
+- `components` - bower components;
+- `less` - less resources;
+- `css`  - css compiled files;
+- `js` - js compiled files;
+- `images|videos` - all video and imeges assets;
+- `fonts` - all fonts;
+- `plugins` - all custom vendors;
+- `*.html` - html compiled files.
 
 Markup:
 ------------
 
-В папке markup представлены файлы проекта по 3 категориям:
-- models – хранятся все файлы сущностей, используемых в проекте,
-- views - хранятся все файлы шаблонов страниц и блоков, используемых в проекте, 
-- controllers - хранит конфигурации всех путей и данных для моделей и представлений,
+murkup folder contains 3 subfolders:
+- models – keeps instances files,
+- views - keeps templates files, 
+- controllers - keep configurations for views and models,
 
-которые реализуют паттерна программирования - [Model-View-Controller]. 
+Is uses popular programming pattern - [Model-View-Controller]. 
 
 ***
 
-Models  - содержит  все файлы сущностей, используемых в проекте. Рекомендуется создавать на каждую новую сущность отдельный JS файл, в котором будет сначала описан класс сущности, а затем экспортированы соответствующие данные. 
 
-Например сущность персоны может принимать вот такой вид, который будет описывается следующей структурой:
+Models - contains all instances project's files. We strongly reccomend to create separate file per each instance.
+
+For example: Person instance looks like:
 
 ```shell
  function Person(id, name, isActive, image) {
@@ -54,7 +53,7 @@ Models  - содержит  все файлы сущностей, использ
 }
 
 module.exports.persons = [
-    new Person(1, 'Ivan',  true,  'images/persons/person1.jpg'),
+    new Person(1, 'John',  true,  'images/persons/person1.jpg'),
     new Person(2, 'Max',   false, 'images/persons/person2.jpg'),
     new Person(3, 'Igor',  true,  'images/persons/person3.jpg'),
     new Person(4, 'Semen', false, 'images/persons/person4.jpg')
@@ -63,29 +62,25 @@ module.exports.persons = [
 
 ***
 
-Views - содержит все шаблоны страниц (модулей/блоков/виджетов). По факту - это вся верстка проекта с парой особенностей.
+Views - contains html templates (modules/blocks/widgets).
 
-В основу верстки ложится шаблонизатор [SwigJS], который максимально приближен к шаблонизатору Twig, используемого в Symfony по умолчанию. С полной документацией можно ознакомится вот здесь - [SwigJS/doc].
+Base of html templates is [SwigJS] template engine, which is similar with Twig template engine uses at Symphany by default. Full documentation is here [SwigJS/doc]
 
-Для всех страниц (которые в последствии должны стать самостоятельными html файлами) мы создаем базовый шаблон, в котором есть обычно шапка и футер, и называем его - base.html.twig ( постфикс .html не обязателен, но он необходим для проектов, которые будут интегрироваться с Symfony). Базовый шаблон лежит в корневой директории всех шаблонов и является каркасом для всех последующих страниц.
+We create base template per each page where are header and footer as usual. We call it base.html.twig (.html postfix is'n necessary but it needs for projects, which will be integrated with Symphany). Base template is at root directory of each templates and is bone for folloving pages 
 
-Для всех общих блоков, которые присутствуют на разных страницах - мы создаем их в папке `markup/views/common`. А подключаются эти блоки с помощью тега `include`. Например, для подключения `common/navbar.html.twig` это будет выглядеть следующим образом:  
+Per common blocks which are used on several pages we create at `markup/views/common` folder. Inserting of such blocks by means of `include` tag. For example:
 
 ```shell
 {% include 'common/navbar.html.twig' %}
 ``` 
-Важно: пути к файлам определяются относительно корневой папки шаблонов - `markup/views`. Т.е. для подключения блока `common/test.html.twig` в файле шаблона `news/my/custom/folder/page_news.html.twig` строчка подключения не изменится
+Important: folders path is determined regarding root template folder `markup/views`. That is to include block `common/test.html.twig` at custom component `news/my/custom/folder/page_news.html.twig` include path is the same 
 
 ```shell
 {% include 'common/test.html.twig' %}
 ``` 
-Это реализуется с помощью cutomного загрузчика файлов при компиляции шаблонов в SwigJS.
 
-Все названия шаблонов в папке шаблонов разделяются с помощью нижнего подчеркивания.
+All external files includes by asset function, which generates right paths to resources
 
-Все папки шаблонов называются с маленькой буквы и единственном числе для сущности: person, author, user, build, event и т.д.
-
-Все внешние файлы подключаются функцией asset, которая генерирует правильные пути к ресурсам. Например, для подключения библиотеки bootstrap из вендоров bower, необходимо написать следующее:
 ```shell
 <link rel="stylesheet" href="{{ asset('components/bootstrap/dist/css/bootstrap.min.css') }}">
 <script src="{{ asset('components/jquery/dist/jquery.min.js') }}"></script>
@@ -94,11 +89,9 @@ Views - содержит все шаблоны страниц (модулей/б
 
 ***
 
-Controllers - содержит конфигурацию компилируемых файлов. 
+Controllers - contains compiled files configuration.
 
-Механизм компиляции файлов из файлов контроллеров прост - просматриваем поочередно каждый файл и смотрим входящие в него экшены. Затем перебираем все экшены и компилируем страницы, в зависимости от конфигурации экшена.
-
-Например, рассмотрим person контроллер:
+For example Person controller:
 
 ```shell
 exports.person = {
@@ -114,57 +107,55 @@ exports.person = {
     }
 };
 ``` 
+ 
+This controlles containes two actions `list` and `show`.
 
-Видно, что контроллер содержит два экшена - `list` и `show`. 
+Action `list` has following configuration:
+- `alias` - file name
+- `template` - template, will be used by compilation
+- `models` - list of instances 
 
-Экшен `list` имеет следующую конфигурацию:
-- `alias` - название файла, которым будет сгенерировано при компиляции
-- `template` - шаблон, который будет использоваться для компиляции
-- `models` - списки сущностей, которые будут загружены в models (это не реализовано. Сейчас подгружаются все сущности, которые есть в `markup/models`)
+Result of  `person` template compilation is two files `persons.html` and `person-show.html` at `web` folder.
 
-В итоге после компиляции шаблона `person`, в папке `web` появиться два файла - `persons.html` и `person-show.html`
+Each controller action has unic route, it looks like  `controller_action`.
 
-Каждый экшен контроллера имеет свой уникальный роут, который имеет вид: `controller_action`.
-
-Для генерации путей можно использовать функцию `path` с названием роута:
+For paths generation might be used `path` function with route name:
+For example: `Person` controller and `show` action:
 
 ```shell
 <a href="{{ path('person_show') }}" class="link">Link</a>
 ```
 
-Выше приведенный пример применим для контроллера `Person` и экшена `show`.
-
 
 Gulp:
 ------------
 
-Gulp - содержит все task'и и watcher'ы сборки. Все задачи разбиты по максимально атомарным действиям:
-- `css` - все задачи связанные с компиляцией CSS;
-- `html` - все задачи связанные с компиляцией шаблонов HTML;
-- `generator` - все задачи связанные с генерацией кода/контента (не реализованы);
-- `images` - все задачи с обработкой изображений (не реализованы);
-- `js` - все задачи с компиляцией javascript (не реализованы);
-- `server` - все задачи связанные с запуском и перезапуском серверов.
+Gulp contains all bundlers tasks and watchers. All tasks are easy to understand:
 
-Все выше перечисленные задачи подключаются в главном gulp файле - `gulpfile.js`, который находится в корне проекта.
+- `css` - all task for compiling CSS;
+- `html` - all task for compiling HTML templates;
+- `generator` - all task for generating code;
+- `images` - all task for compiling images;
+- `js` - all task for compiling javascript ;
+- `server` - all task for compiling for developing mode.
 
 
-Генераторы:
+Generators:
 ------------
 
-Реализована таска `gulp entity`, которая генерирует контролер, модель и представление для сущности.
+There is task `gulp entity`, who generates controller, model and view for instance.
 
 ```shell
 gulp entity --e test,res,fd --a list,show,create,edit --m id,title,body
 ```
 
-Аттрибуты:
+Attributes:
 
---е - список сущностей, через зяаятую
+--е - instances list, through comma
 
---a - список экшенов (необязательный параметр, по умолчанию принимает: list,show )
+--a - actions list (not necessary, default: list,show )
 
---m - список свойств сущности (необязательный параметр, по умолчанию принимает: id,name )
+--m - instance properties list (not necessary, default: id,name )
 
 
 [markup-swig]: https://github.com/Fafnur/markup-swig
