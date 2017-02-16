@@ -6,12 +6,10 @@ Markus
 Goal:
 ------------
 
-The main goal of `Markus`is creating the fastest html integration with Symphany. Decrease time for replacing and editing templates by means of using Symphany methodology, SwigJS template engine and gorgeouse Gulp bundler.
+The main goal of `Markus`is creating the fastest html integration with Symphany. Decrease time for replacing and editing templates by means of using Symphany methodology, SwigJS template engine and gorgeous Gulp bundler.
 
 Project structure:
 ------------
-
-В проекте три основных директории: `web`, `markup` и `gulp`. Подробнее о каждой из папок ниже.
 
 There are three main directories: `web`, `markup` and `gulp`. Description of each one is below
 
@@ -22,7 +20,7 @@ Web folder contains all project static files:
 - `less` - less resources;
 - `css`  - css compiled files;
 - `js` - js compiled files;
-- `images|videos` - all video and imeges assets;
+- `images|videos` - all video and images assets;
 - `fonts` - all fonts;
 - `plugins` - all custom vendors;
 - `*.html` - html compiled files.
@@ -40,7 +38,7 @@ Is uses popular programming pattern - [Model-View-Controller].
 ***
 
 
-Models - contains all instances project's files. We strongly reccomend to create separate file per each instance.
+Models - contains all instances project's files. We strongly recommend to create separate file per each instance.
 
 For example: Person instance looks like:
 
@@ -66,7 +64,7 @@ Views - contains html templates (modules/blocks/widgets).
 
 Base of html templates is [SwigJS] template engine, which is similar with Twig template engine uses at Symphany by default. Full documentation is here [SwigJS/doc]
 
-We create base template per each page where are header and footer as usual. We call it base.html.twig (.html postfix is'n necessary but it needs for projects, which will be integrated with Symphany). Base template is at root directory of each templates and is bone for folloving pages 
+We create base template per each page where are header and footer as usual. We call it base.html.twig (.html postfix isn't necessary but it needs for projects, which will be integrated with Symphany). Base template is at root directory of each templates and is bone for following pages 
 
 Per common blocks which are used on several pages we create at `markup/views/common` folder. Inserting of such blocks by means of `include` tag. For example:
 
@@ -108,7 +106,7 @@ exports.person = {
 };
 ``` 
  
-This controlles containes two actions `list` and `show`.
+This controllers contains two actions `list` and `show`.
 
 Action `list` has following configuration:
 - `alias` - file name
@@ -117,7 +115,7 @@ Action `list` has following configuration:
 
 Result of  `person` template compilation is two files `persons.html` and `person-show.html` at `web` folder.
 
-Each controller action has unic route, it looks like  `controller_action`.
+Each controller action has unique route, it looks like  `controller_action`.
 
 For paths generation might be used `path` function with route name:
 For example: `Person` controller and `show` action:
